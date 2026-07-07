@@ -424,5 +424,59 @@
                 "name": "Eyes of the Prey"
             }
         ]
+    },
+    {
+        "banner-key":   "himekoNova_avatar",
+        "banner-title": "Himeko Nova (Avatar)",
+        "enabled": true,
+        "items": [
+            {
+                "type": "Avatar",
+                "rarity": "Gold",
+                "name": "Himeko Nova"
+            },
+            {
+                "type": "Avatar",
+                "rarity": "Purple",
+                "name": "Moze"
+            },
+            {
+                "type": "Avatar",
+                "rarity": "Purple",
+                "name": "Hanya"
+            },
+            {
+                "type": "Avatar",
+                "rarity": "Purple",
+                "name": "Serval"
+            }
+        ]
+    },
+    {
+        "banner-key":   "himekoNova_lc",
+        "banner-title": "Himeko Nova (LC)",
+        "enabled": true,
+        "items": [
+            {
+                "type": "LightCone",
+                "rarity": "Gold",
+                "name": "A Star That Lights the Night"
+            },
+            {
+                "type": "LightCone",
+                "rarity": "Purple",
+                "name": "After the Charmony Fall"
+            },
+            {
+                "type": "LightCone",
+                "rarity": "Purple",
+                "name": "Under the Blue Sky"
+            },
+            {
+                "type": "LightCone",
+                "rarity": "Purple",
+                "name": "The Birth of the Self"
+            }
+        ]
     }
 ]

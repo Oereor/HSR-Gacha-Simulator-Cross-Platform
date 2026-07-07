@@ -329,6 +329,14 @@
       "en": "Yaoguang",
       "zh": "爻光"
     },
+    "avatar.Himeko Nova": {
+      "en": "Himeko Nova",
+      "zh": "姬子·启行"
+    },
+    "lightcone.A Star That Lights the Night": {
+      "en": "A Star That Lights the Night",
+      "zh": "当一颗星照亮夜空"
+    },
     "lightcone.Night on the Milky Way": {
       "en": "Night on the Milky Way",
       "zh": "银河铁道之夜"
@@ -983,6 +991,14 @@
     "ui.banner.silverWolfLv999_lc": {
       "en": "Silver Wolf LV.999 (LC)",
       "zh": "银狼 LV.999（光锥）"
+    },
+    "ui.banner.himekoNova_avatar": {
+      "en": "Himeko Nova (Avatar)",
+      "zh": "姬子·启行（角色）"
+    },
+    "ui.banner.himekoNova_lc": {
+      "en": "Himeko Nova (LC)",
+      "zh": "姬子·启行（光锥）"
     },
     "ui.banner.all_gold": {
       "en": "All Gold (Expanded Pool)",

@@ -294,6 +294,11 @@
         "name-EN": "Saber", 
         "name-ZH": "Saber"
     },
+    {
+        "text-type": "AvatarName", 
+        "name-EN": "Himeko Nova", 
+        "name-ZH": "姬子·启行"
+    },
     
     {
         "text-type": "LightConeName", 
@@ -589,5 +594,10 @@
         "text-type": "LightConeName", 
         "name-EN": "A Thankless Coronation",
         "name-ZH": "没有回报的加冕"
+    },
+    {
+        "text-type": "LightConeName", 
+        "name-EN": "A Star That Lights the Night",
+        "name-ZH": "当一颗星照亮夜空"
     }
 ]

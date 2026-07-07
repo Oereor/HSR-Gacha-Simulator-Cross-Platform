@@ -412,6 +412,13 @@
         "path": "Destruction",
         "element-type": "Physical"
     },
+    {
+        "type": "Avatar",
+        "rarity": "Gold",
+        "name": "Himeko Nova",
+        "path": "Erudition",
+        "element-type": "Fire"
+    },
 
     {
         "type": "LightCone",
@@ -765,6 +772,12 @@
         "type": "LightCone",
         "rarity": "Gold",
         "name": "Yet Hope Is Priceless",
+        "path": "Erudition"
+    },
+    {
+        "type": "LightCone",
+        "rarity": "Gold",
+        "name": "A Star That Lights the Night",
         "path": "Erudition"
     }
 ]
