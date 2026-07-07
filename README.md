@@ -1,6 +1,6 @@
 # HSR Gacha Simulator — Cross-Platform
 
-A cross-platform Honkai: Star Rail warp (gacha) simulator, rebuilt from the original [.NET+WPF project](../HSR-Gacha-Simulator) using **Vue 3 + TypeScript + Tailwind CSS**. Runs in any modern browser on Windows, macOS, and Linux.
+A cross-platform Honkai: Star Rail warp (gacha) simulator, rebuilt from the original [.NET+WPF project](https://github.com/Oereor/HSR-Gacha-Simulator) using **Vue 3 + TypeScript + Tailwind CSS**. Runs in any modern browser on Windows, macOS, and Linux.
 
 ## Tech Stack
 
@@ -72,4 +72,4 @@ pnpm build
 
 ## License
 
-MIT — see [LICENSE](../HSR-Gacha-Simulator/LICENSE) from the original project.
+MIT
