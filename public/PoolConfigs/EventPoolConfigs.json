@@ -320,7 +320,7 @@
     {
         "banner-key":   "hyacine_avatar",
         "banner-title": "Hyacine (Avatar)",
-        "enabled": true,
+        "enabled": false,
         "items": [
             {
                 "type": "Avatar",
@@ -347,7 +347,7 @@
     {
         "banner-key":   "hyacine_lc",
         "banner-title": "Hyacine (LC)",
-        "enabled": true,
+        "enabled": false,
         "items": [
             {
                 "type": "LightCone",

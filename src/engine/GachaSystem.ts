@@ -250,6 +250,52 @@ export class GachaSystem {
     return this.eventGoldItemPool.length > 0;
   }
 
+  /** Number of pulled rate-up gold items (gold items in the event gold pool). */
+  get rateUpGoldCount(): number {
+    return this.History.filter(
+      i => i.Rarity === ItemRarity.Gold && this.eventGoldItemPool.includes(i),
+    ).length;
+  }
+
+  /**
+   * 1-based index of the last gold (5★) item in History.
+   * Returns 0 if no gold items have been pulled.
+   */
+  get lastGoldPullIndex(): number {
+    for (let i = this.History.length - 1; i >= 0; i--) {
+      if (this.History[i].Rarity === ItemRarity.Gold) {
+        return i + 1; // 1-based
+      }
+    }
+    return 0;
+  }
+
+  /**
+   * Average pulls per gold: index of the latest gold divided by total gold count.
+   * Uses the latest gold's position (not History.length) to avoid counting
+   * overflow pulls from a x10 batch that came after the last gold.
+   * Returns NaN if no gold items have been pulled.
+   */
+  get averageGoldPullNumber(): number {
+    const idx = this.lastGoldPullIndex;
+    const gc = this.goldCount;
+    if (gc === 0 || idx === 0) return NaN;
+    return idx / gc;
+  }
+
+  /**
+   * Average pulls per rate-up gold: index of the latest gold divided by
+   * rate-up gold count. Always ≥ averageGoldPullNumber since the denominator
+   * is ≤ goldCount and the numerator is identical.
+   * Returns NaN if no rate-up gold items have been pulled.
+   */
+  get averageRateUpPullNumber(): number {
+    const idx = this.lastGoldPullIndex;
+    const rc = this.rateUpGoldCount;
+    if (rc === 0 || idx === 0) return NaN;
+    return idx / rc;
+  }
+
   // ═══════════════════════════════════════════════════════════════
   //  Private: Core Probability Roll
   // ═══════════════════════════════════════════════════════════════

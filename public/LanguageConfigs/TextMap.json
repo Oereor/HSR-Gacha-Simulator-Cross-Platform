@@ -1076,6 +1076,14 @@
       "en": "Missed: {0}/{1} ({2:F1}%)",
       "zh": "歪：{0}/{1}（{2:F1}%）"
     },
+    "ui.stats.avg_gold": {
+      "en": "Avg pulls per 5★: {0}",
+      "zh": "平均出金抽数：{0}"
+    },
+    "ui.stats.avg_rateup": {
+      "en": "Avg pulls per rate-up: {0}",
+      "zh": "平均出UP抽数：{0}"
+    },
     "ui.result.default": {
       "en": "Pull to begin",
       "zh": "点击跃迁开始"

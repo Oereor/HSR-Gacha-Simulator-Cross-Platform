@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useGachaStore } from './useGachaStore';
 import { useLocalizationService } from '@/services/useLocalizationService';
 
@@ -76,6 +76,50 @@ export const usePityStatsStore = defineStore('pityStats', () => {
     return s !== null && s.hasEventItems && s.goldCount > 0;
   });
 
+  // ── Average pull statistics ─────────────────────────────────────
+  // Updated only when a gold (or rate-up gold) item is pulled,
+  // not on every pull. Formula delegates to GachaSystem getters
+  // which use lastGoldPullIndex / itemCount.
+
+  const avgGoldPullText = ref('');
+  const showAvgGold = ref(false);
+
+  watch(
+    () => sys.value?.goldCount ?? 0,
+    (gc) => {
+      const s = sys.value;
+      if (!s || gc === 0) {
+        avgGoldPullText.value = '';
+        showAvgGold.value = false;
+        return;
+      }
+      const avg = s.averageGoldPullNumber;
+      avgGoldPullText.value = l10n.get('ui.stats.avg_gold', avg.toFixed(1));
+      showAvgGold.value = true;
+    },
+  );
+
+  const avgRateUpPullText = ref('');
+  const showAvgRateUp = ref(false);
+
+  // Watch goldCount so the rate-up average also updates when an
+  // off-rate gold is pulled (lastGoldPullIndex moves forward while
+  // rateUpGoldCount stays the same, so the quotient still changes).
+  watch(
+    () => sys.value?.goldCount ?? 0,
+    (_gc) => {
+      const s = sys.value;
+      if (!s || !s.hasEventItems || s.rateUpGoldCount === 0) {
+        avgRateUpPullText.value = '';
+        showAvgRateUp.value = false;
+        return;
+      }
+      const avg = s.averageRateUpPullNumber;
+      avgRateUpPullText.value = l10n.get('ui.stats.avg_rateup', avg.toFixed(1));
+      showAvgRateUp.value = true;
+    },
+  );
+
   return {
     goldPity, goldGuarantee, goldGuaranteeColor,
     purplePity, purpleGuarantee, purpleGuaranteeColor,
@@ -83,5 +127,7 @@ export const usePityStatsStore = defineStore('pityStats', () => {
     purpleCount, purpleRate, blueCount, blueRate,
     missedGoldStats, showMissedStats,
     total,
+    showAvgGold, avgGoldPullText,
+    showAvgRateUp, avgRateUpPullText,
   };
 });

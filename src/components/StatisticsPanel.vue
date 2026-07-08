@@ -32,6 +32,22 @@ const l10n = useLocalizationService();
       ↳ {{ pityStats.missedGoldStats }}
     </div>
 
+    <!-- Avg pulls per 5★ -->
+    <div
+      v-if="pityStats.showAvgGold"
+      class="text-gold text-[13px] ml-4 mb-1"
+    >
+      {{ pityStats.avgGoldPullText }}
+    </div>
+
+    <!-- Avg pulls per rate-up (event banners only) -->
+    <div
+      v-if="pityStats.showAvgRateUp"
+      class="text-gold text-[13px] ml-4 mb-1"
+    >
+      {{ pityStats.avgRateUpPullText }}
+    </div>
+
     <!-- 4★ row -->
     <div class="flex items-center gap-2 text-sm mb-1">
       <span class="text-purple min-w-[80px]">★★★★  {{ l10n.get('ui.stats.rarity_4star') }}</span>
