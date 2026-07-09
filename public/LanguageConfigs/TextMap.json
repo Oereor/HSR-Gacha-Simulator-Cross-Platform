@@ -1016,6 +1016,10 @@
       "en": "Reset Banner",
       "zh": "重置卡池"
     },
+    "ui.button.cancel": {
+      "en": "Cancel",
+      "zh": "取消"
+    },
     "ui.button.prev_page": {
       "en": "◄ Previous",
       "zh": "◄ 上一个"

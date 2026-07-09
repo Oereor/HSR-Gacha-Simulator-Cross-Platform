@@ -32,7 +32,7 @@ const emit = defineEmits<{
           @click="emit('cancel')"
           class="px-4 py-1.5 bg-btn-primary hover:bg-btn-hover active:bg-btn-active border border-card-border rounded text-text-primary text-sm cursor-pointer transition-colors"
         >
-          {{ cancelLabel ?? l10n.get('ui.button.prev_page') }}
+          {{ cancelLabel ?? l10n.get('ui.button.cancel') }}
         </button>
         <button
           @click="emit('confirm')"
