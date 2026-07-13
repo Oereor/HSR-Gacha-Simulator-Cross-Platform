@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue';
 import { useGachaStore } from '@/stores/useGachaStore';
+import { useCustomPoolStore } from '@/stores/useCustomPoolStore';
 import { useLocalizationService } from '@/services/useLocalizationService';
 import BannerPill from './BannerPill.vue';
+import ConfirmDialog from './ConfirmDialog.vue';
 
 const gacha = useGachaStore();
+const customStore = useCustomPoolStore();
 const l10n = useLocalizationService();
 
 const scrollContainer = ref<HTMLDivElement | null>(null);
@@ -46,6 +49,34 @@ watch(() => gacha.selectedBannerIndex, () => {
 onMounted(() => {
   updateScrollButtons();
 });
+
+// ── Custom pool delete ──────────────────────────────────────────
+const showDeleteConfirm = ref(false);
+const deleteTargetId = ref<string | null>(null);
+const deleteTargetTitle = ref('');
+
+function onDeleteCustom(poolId: string) {
+  const config = customStore.pools.find(p => p.id === poolId);
+  if (!config) return;
+  deleteTargetId.value = poolId;
+  const goldName = l10n.getItemName(config.goldItem.name ?? '');
+  const typeKey = config.poolType === 'Avatar' ? 'ui.custom.type.avatar' : 'ui.custom.type.lightcone';
+  deleteTargetTitle.value = config.customTitle || `${goldName} (${l10n.get(typeKey)})`;
+  showDeleteConfirm.value = true;
+}
+
+function onDeleteConfirm() {
+  if (!deleteTargetId.value) return;
+  customStore.deletePool(deleteTargetId.value);
+  gacha.removeCustomBanner(deleteTargetId.value);
+  showDeleteConfirm.value = false;
+  deleteTargetId.value = null;
+}
+
+function onDeleteCancel() {
+  showDeleteConfirm.value = false;
+  deleteTargetId.value = null;
+}
 </script>
 
 <template>
@@ -72,8 +103,17 @@ onMounted(() => {
           :key="banner.bannerKey"
           :banner="banner"
           :is-selected="index === gacha.selectedBannerIndex"
+          :is-custom="banner.isCustom ?? false"
           @select="gacha.selectBanner(index)"
+          @delete="banner.isCustom ? onDeleteCustom(banner.customPoolId!) : null"
         />
+        <!-- Add Custom entry pill -->
+        <router-link
+          to="/custom"
+          class="shrink-0 px-[14px] py-[5px] text-[13px] font-semibold rounded-[14px] cursor-pointer transition-colors border bg-card-bg border-dashed border-card-border text-text-dim hover:border-purple hover:text-purple no-underline select-none"
+        >
+          &#10133; {{ l10n.get('ui.custom.add') }}
+        </router-link>
       </div>
       <button
         @click="scrollRight"
@@ -83,5 +123,15 @@ onMounted(() => {
         ▶
       </button>
     </div>
+
+    <!-- Delete confirmation dialog -->
+    <ConfirmDialog
+      :visible="showDeleteConfirm"
+      :title="l10n.get('dialog.delete_custom_pool.title')"
+      :message="l10n.get('dialog.delete_custom_pool.message', deleteTargetTitle)"
+      :confirmLabel="l10n.get('dialog.delete_custom_pool.confirm')"
+      @confirm="onDeleteConfirm"
+      @cancel="onDeleteCancel"
+    />
   </div>
 </template>

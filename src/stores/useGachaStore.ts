@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia';
 import { ref, computed, shallowRef } from 'vue';
 import { GachaSystem } from '@/engine/GachaSystem';
-import { GachaType, ItemType, ItemRarity, PathType, ElementType, type ItemData, type EventPoolConfigEntry } from '@/types';
-import { loadFromFile, buildMasterLookup, loadEventPoolConfigs } from '@/services/usePoolDataService';
+import { GachaType, ItemType, ItemRarity, PathType, ElementType, type ItemData, type EventPoolConfigEntry, type CustomPoolConfigDto } from '@/types';
+import { loadFromFile, buildMasterLookup, loadEventPoolConfigs, toItemData } from '@/services/usePoolDataService';
 import { useLocalizationService } from '@/services/useLocalizationService';
+import { useCustomPoolStore } from '@/stores/useCustomPoolStore';
 import { rarityToStars as rarityToStarsFn, getRarityForegroundColor, getElementColor } from '@/composables/useRarityColors';
 import { formatPath as formatPathFn, formatElement as formatElementFn } from '@/utils/formatters';
 
@@ -24,6 +25,10 @@ export interface BannerDescriptor {
   gachaType: GachaType;
   /** Localized display name (reactive). */
   displayName: string;
+  /** True if this banner was created by the user (not built-in). */
+  isCustom?: boolean;
+  /** The custom pool config ID (only set when isCustom is true). */
+  customPoolId?: string;
 }
 
 /**
@@ -169,6 +174,13 @@ export const useGachaStore = defineStore('gacha', () => {
         });
       }
 
+      // Load custom pools from localStorage
+      const customStore = useCustomPoolStore();
+      customStore.loadFromStorage();
+      for (const config of customStore.pools) {
+        addCustomBanner(config);
+      }
+
       banners.value = result;
       isLoaded.value = true;
       statusText.value = l10n.get('ui.status.ready');
@@ -289,6 +301,91 @@ export const useGachaStore = defineStore('gacha', () => {
   }
 
   // ═══════════════════════════════════════════════════════════════
+  //  Custom pool helpers
+  // ═══════════════════════════════════════════════════════════════
+
+  /**
+   * Generate the default banner title from gold item name and pool type.
+   * Format: "{gold-item-localized-name} ({pool-type-localized})"
+   */
+  function getDefaultTitle(goldItemEnglishName: string, poolType: 'Avatar' | 'LightCone'): string {
+    const goldLocalized = l10n.getItemName(goldItemEnglishName);
+    const typeKey = poolType === 'Avatar'
+      ? 'ui.custom.type.avatar'
+      : 'ui.custom.type.lightcone';
+    const typeLocalized = l10n.get(typeKey);
+    return `${goldLocalized} (${typeLocalized})`;
+  }
+
+  /**
+   * Add a custom banner to the end of the banners list.
+   * Creates a GachaSystem for it using shared pools from the ordinary banner.
+   */
+  function addCustomBanner(config: CustomPoolConfigDto): void {
+    const gachaType = config.poolType === 'Avatar'
+      ? GachaType.EventAvatar
+      : GachaType.EventLightCone;
+
+    const eventGold: ItemData[] = [toItemData(config.goldItem)];
+    const eventPurple: ItemData[] = config.purpleItems.map(toItemData);
+
+    const ordinarySys = banners.value[0]?.system;
+    if (!ordinarySys) {
+      console.error('[GachaStore] Cannot add custom banner: ordinary system not initialized.');
+      return;
+    }
+
+    const celestial = gachaType === GachaType.EventAvatar
+      ? [...ordinarySys.celestialGoldAvatarPoolExposed]
+      : [];
+
+    const sys = GachaSystem.create(gachaType);
+    sys.loadPools(
+      [...ordinarySys.goldAvatarPoolExposed],
+      [...ordinarySys.goldLightConePoolExposed],
+      celestial,
+      eventGold,
+      [...ordinarySys.purpleAvatarPoolExposed],
+      [...ordinarySys.purpleLightConePoolExposed],
+      eventPurple,
+      [...ordinarySys.blueItemPoolExposed],
+    );
+    sys.onHistoryChanged = onHistoryChanged;
+
+    const bannerKey = `custom_${config.id}`;
+    const displayName = config.customTitle
+      || getDefaultTitle(config.goldItem.name!, config.poolType);
+
+    banners.value.push({
+      system: sys,
+      bannerKey,
+      bannerTitle: displayName,
+      gachaType,
+      displayName,
+      isCustom: true,
+      customPoolId: config.id,
+    });
+  }
+
+  /**
+   * Remove a custom banner by its pool config ID.
+   */
+  function removeCustomBanner(poolId: string): void {
+    const idx = banners.value.findIndex(
+      b => b.isCustom && b.customPoolId === poolId
+    );
+    if (idx === -1) return;
+
+    if (selectedBannerIndex.value === idx) {
+      selectBanner(0);
+    } else if (selectedBannerIndex.value > idx) {
+      selectedBannerIndex.value--;
+    }
+
+    banners.value.splice(idx, 1);
+  }
+
+  // ═══════════════════════════════════════════════════════════════
   //  Static helpers
   // ═══════════════════════════════════════════════════════════════
 
@@ -321,5 +418,6 @@ export const useGachaStore = defineStore('gacha', () => {
     // Actions
     initialize, selectBanner, pull, resetCurrentBanner,
     navigatePrev, navigateNext, reloadAllHistory, clearHistory,
+    addCustomBanner, removeCustomBanner,
   };
 });

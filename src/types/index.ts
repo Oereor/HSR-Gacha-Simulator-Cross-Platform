@@ -110,3 +110,24 @@ export type MasterLookup = Map<string, Map<string, ItemData>>;
 export function masterLookupKey(type: ItemType, rarity: ItemRarity): string {
   return `${type}|${rarity}`;
 }
+
+// ── Custom pool types ────────────────────────────────────────────────
+
+/**
+ * Serializable DTO for a user-created custom event pool.
+ * Stored in localStorage. Does NOT contain GachaSystem instances.
+ */
+export interface CustomPoolConfigDto {
+  /** Stable UUID v4, generated at creation time. */
+  id: string;
+  /** Pool type: "Avatar" or "LightCone". */
+  poolType: 'Avatar' | 'LightCone';
+  /** The full ItemDataDto for the rate-up gold item. */
+  goldItem: ItemDataDto;
+  /** Exactly 3 ItemDataDto entries for rate-up purple items. */
+  purpleItems: [ItemDataDto, ItemDataDto, ItemDataDto];
+  /** User-provided custom title, or empty string for auto-generation. */
+  customTitle: string;
+  /** Unix timestamp (ms) of creation. */
+  createdAt: number;
+}

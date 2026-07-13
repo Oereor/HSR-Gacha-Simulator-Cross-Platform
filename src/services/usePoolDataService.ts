@@ -2,10 +2,27 @@ import type { ItemData, ItemDataDto, EventPoolConfigEntry, EventPoolEntryDto, Ma
 import { ItemType, ItemRarity, PathType, ElementType, masterLookupKey } from '@/types';
 
 /**
+ * Convert the canonical ItemData back to a serializable DTO.
+ * Reverse of toItemData(). Used for persisting custom pools.
+ */
+export function itemDataToDto(item: ItemData): ItemDataDto {
+  const dto: ItemDataDto = {
+    type: ItemType[item.Type],
+    rarity: ItemRarity[item.Rarity],
+    name: item.Name,
+    path: PathType[item.Path],
+  };
+  if (item.ElementType !== ElementType.Unknown) {
+    dto['element-type'] = ElementType[item.ElementType];
+  }
+  return dto;
+}
+
+/**
  * Map a JSON DTO to the canonical ItemData interface.
  * Mirrors PoolDataService.ToItemData().
  */
-function toItemData(dto: ItemDataDto): ItemData {
+export function toItemData(dto: ItemDataDto): ItemData {
   return {
     Type:        parseEnum(ItemType, dto.type),
     Rarity:      parseEnum(ItemRarity, dto.rarity),

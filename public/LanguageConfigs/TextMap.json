@@ -1183,6 +1183,118 @@
     "dialog.error.init_failed": {
       "en": "Failed to initialise: {0}",
       "zh": "初始化失败：{0}"
+    },
+    "ui.custom.add": {
+      "en": "Custom",
+      "zh": "自定义"
+    },
+    "ui.custom.page_title": {
+      "en": "Custom Event Pools",
+      "zh": "自定义活动池"
+    },
+    "ui.custom.back": {
+      "en": "← Back to Simulator",
+      "zh": "← 返回模拟器"
+    },
+    "ui.custom.pool_type_label": {
+      "en": "Pool Type",
+      "zh": "池类型"
+    },
+    "ui.custom.type.avatar": {
+      "en": "Avatar",
+      "zh": "角色"
+    },
+    "ui.custom.type.lightcone": {
+      "en": "Light Cone",
+      "zh": "光锥"
+    },
+    "ui.custom.gold_item_label": {
+      "en": "Rate-Up Gold Item (5★)",
+      "zh": "UP金色物品 (5★)"
+    },
+    "ui.custom.gold_item_placeholder": {
+      "en": "Start typing to search...",
+      "zh": "输入以搜索..."
+    },
+    "ui.custom.gold_item_selected": {
+      "en": "Selected:",
+      "zh": "已选："
+    },
+    "ui.custom.gold_item_none": {
+      "en": "None",
+      "zh": "无"
+    },
+    "ui.custom.purple_items_label": {
+      "en": "Rate-Up Purple Items (4★)",
+      "zh": "UP紫色物品 (4★)"
+    },
+    "ui.custom.select_exactly_3": {
+      "en": "Select exactly 3",
+      "zh": "选择恰好 3 个"
+    },
+    "ui.custom.filter": {
+      "en": "Filter...",
+      "zh": "筛选..."
+    },
+    "ui.custom.selected": {
+      "en": "selected",
+      "zh": "已选"
+    },
+    "ui.custom.empty_slot": {
+      "en": "— empty —",
+      "zh": "— 空 —"
+    },
+    "ui.custom.title_label": {
+      "en": "Banner Title (optional)",
+      "zh": "卡池标题（可选）"
+    },
+    "ui.custom.title_placeholder": {
+      "en": "e.g. My Favorite Banner",
+      "zh": "例如：我最爱的卡池"
+    },
+    "ui.custom.title_hint": {
+      "en": "Auto-title if blank:",
+      "zh": "留空则自动生成："
+    },
+    "ui.custom.create_button": {
+      "en": "🎲 Create Pool",
+      "zh": "🎲 创建卡池"
+    },
+    "ui.custom.no_pools": {
+      "en": "No custom pools yet. Create your first one above!",
+      "zh": "还没有自定义卡池。在上面创建第一个！"
+    },
+    "ui.custom.your_pools": {
+      "en": "Your Custom Pools",
+      "zh": "您的自定义卡池"
+    },
+    "ui.custom.purple_items_list": {
+      "en": "Purple:",
+      "zh": "紫卡："
+    },
+    "ui.custom.limit_reached": {
+      "en": "Maximum {0} custom pools reached. Delete an existing pool to create a new one.",
+      "zh": "已达到 {0} 个自定义卡池上限。请删除现有卡池后再创建新的。"
+    },
+    "dialog.delete_custom_pool.title": {
+      "en": "Delete Custom Pool",
+      "zh": "删除自定义卡池"
+    },
+    "dialog.delete_custom_pool.message": {
+      "en": "Are you sure you want to delete the custom pool \"{0}\"?\nThis action cannot be undone.",
+      "zh": "确定要删除自定义卡池「{0}」吗？\n此操作不可撤销。"
+    },
+    "dialog.delete_custom_pool.confirm": {
+      "en": "Delete",
+      "zh": "删除"
+    },
+    "ui.status.custom_created": {
+      "en": "Custom pool \"{0}\" created.",
+      "zh": "自定义卡池「{0}」已创建。"
+    },
+    "ui.status.custom_deleted": {
+      "en": "Custom pool \"{0}\" deleted.",
+      "zh": "自定义卡池「{0}」已删除。"
     }
   }
 }

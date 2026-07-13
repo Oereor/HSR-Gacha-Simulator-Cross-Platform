@@ -5,9 +5,13 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      // The main view is App.vue itself; we use a simple redirect component
-      component: () => import('@/App.vue'),
+      name: 'simulator',
+      component: () => import('@/views/SimulatorView.vue'),
+    },
+    {
+      path: '/custom',
+      name: 'custom-pools',
+      component: () => import('@/views/CustomPoolPage.vue'),
     },
   ],
 });
