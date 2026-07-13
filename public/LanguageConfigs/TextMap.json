@@ -1190,7 +1190,7 @@
     },
     "ui.custom.page_title": {
       "en": "Custom Event Pools",
-      "zh": "自定义活动池"
+      "zh": "自定义活动卡池"
     },
     "ui.custom.back": {
       "en": "← Back to Simulator",
@@ -1198,7 +1198,7 @@
     },
     "ui.custom.pool_type_label": {
       "en": "Pool Type",
-      "zh": "池类型"
+      "zh": "卡池类型"
     },
     "ui.custom.type.avatar": {
       "en": "Avatar",
@@ -1214,7 +1214,7 @@
     },
     "ui.custom.gold_item_placeholder": {
       "en": "Start typing to search...",
-      "zh": "输入以搜索..."
+      "zh": "键入以搜索..."
     },
     "ui.custom.gold_item_selected": {
       "en": "Selected:",
@@ -1230,7 +1230,7 @@
     },
     "ui.custom.select_exactly_3": {
       "en": "Select exactly 3",
-      "zh": "选择恰好 3 个"
+      "zh": "选择 3 个"
     },
     "ui.custom.filter": {
       "en": "Filter...",
@@ -1249,8 +1249,8 @@
       "zh": "卡池标题（可选）"
     },
     "ui.custom.title_placeholder": {
-      "en": "e.g. My Favorite Banner",
-      "zh": "例如：我最爱的卡池"
+      "en": "e.g. Custom Banner 1",
+      "zh": "例如：自定义名称1"
     },
     "ui.custom.title_hint": {
       "en": "Auto-title if blank:",
@@ -1261,8 +1261,8 @@
       "zh": "🎲 创建卡池"
     },
     "ui.custom.no_pools": {
-      "en": "No custom pools yet. Create your first one above!",
-      "zh": "还没有自定义卡池。在上面创建第一个！"
+      "en": "No custom pools yet. Create your first one here!",
+      "zh": "还没有自定义卡池。来创建一个吧！"
     },
     "ui.custom.your_pools": {
       "en": "Your Custom Pools",
