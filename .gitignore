@@ -30,3 +30,5 @@ npm-debug.log*
 .claude/
 CLAUDE.md
 DEVELOPMENT_DOCUMENT.md
+CustomPoolDesign.md
+CustomPoolRefactor.md
