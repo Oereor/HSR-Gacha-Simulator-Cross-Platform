@@ -83,6 +83,16 @@ export class GachaSystem {
     return new GachaSystem(type);
   }
 
+  // ── Pool-exposing getters (readonly) ──────────────────────────────
+
+  /** Expose shared pools for custom banner creation. Read-only. */
+  get goldAvatarPoolExposed(): readonly ItemData[] { return this.goldAvatarPool; }
+  get goldLightConePoolExposed(): readonly ItemData[] { return this.goldLightConePool; }
+  get celestialGoldAvatarPoolExposed(): readonly ItemData[] { return this.celestialGoldAvatarPool; }
+  get purpleAvatarPoolExposed(): readonly ItemData[] { return this.purpleAvatarPool; }
+  get purpleLightConePoolExposed(): readonly ItemData[] { return this.purpleLightConePool; }
+  get blueItemPoolExposed(): readonly ItemData[] { return this.blueItemPool; }
+
   // ── Public API ─────────────────────────────────────────────────
 
   /**
