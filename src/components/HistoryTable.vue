@@ -6,6 +6,16 @@ import { ElementType, ItemType } from '@/types';
 
 const gacha = useGachaStore();
 const l10n = useLocalizationService();
+
+/** Jump the result card to the item corresponding to this history row. */
+function selectRow(rowIndex: number): void {
+  gacha.navigateTo(rowIndex - 1);
+}
+
+/** Whether this row was the last one clicked (drives highlight). */
+function isSelected(rowIndex: number): boolean {
+  return gacha.selectedHistoryIndex === rowIndex - 1;
+}
 </script>
 
 <template>
@@ -30,7 +40,13 @@ const l10n = useLocalizationService();
           <tr
             v-for="row in gacha.historyRows"
             :key="row.index"
-            class="border-b border-[#2a2a4e] hover:bg-[#1e2a4a] transition-colors"
+            @click="selectRow(row.index)"
+            :class="[
+              'border-b border-[#2a2a4e] transition-colors',
+              isSelected(row.index)
+                ? 'bg-[#2a3a5e] cursor-default'
+                : 'hover:bg-[#1e2a4a] cursor-pointer'
+            ]"
           >
             <td class="p-2 text-text-dim">{{ row.index }}</td>
             <td class="p-2 text-text-primary">{{ row.name }}</td>

@@ -76,6 +76,8 @@ export const useGachaStore = defineStore('gacha', () => {
    * -1 means "no result selected" (cleared state).
    */
   const currentResultIndex = ref(-1);
+  /** Tracks which history row was last clicked. -1 = none. Drives table highlight only. */
+  const selectedHistoryIndex = ref(-1);
 
   // ── Status ─────────────────────────────────────────────────────
   const statusText = ref('');
@@ -199,6 +201,7 @@ export const useGachaStore = defineStore('gacha', () => {
     if (index < 0 || index >= banners.value.length) return;
     selectedBannerIndex.value = index;
     currentResultIndex.value = -1;
+    selectedHistoryIndex.value = -1;
     reloadAllHistory();
     statusText.value = l10n.get('ui.status.ready');
   }
@@ -218,6 +221,7 @@ export const useGachaStore = defineStore('gacha', () => {
     }
 
     currentResultIndex.value = sys.History.length - 1;
+    selectedHistoryIndex.value = -1;
     afterPull(count);
   }
 
@@ -245,6 +249,7 @@ export const useGachaStore = defineStore('gacha', () => {
     sys.reset();
     const bannerName = selectedBanner.value?.displayName ?? l10n.get('ui.banner.ordinary');
     currentResultIndex.value = -1;
+    selectedHistoryIndex.value = -1;
     historyRows.value = [];
     statusText.value = l10n.get('ui.status.banner_reset', bannerName);
   }
@@ -267,6 +272,19 @@ export const useGachaStore = defineStore('gacha', () => {
     let newIdx = currentResultIndex.value + 1;
     if (newIdx >= sys.History.length) newIdx = 0;
     currentResultIndex.value = newIdx;
+  }
+
+  /**
+   * Jump the result card to a specific history index (called from row click).
+   * Sets BOTH currentResultIndex (card) and selectedHistoryIndex (table highlight).
+   * @param historyIndex - 0-based index into currentSystem.History
+   */
+  function navigateTo(historyIndex: number): void {
+    const sys = currentSystem.value;
+    if (!sys || sys.History.length === 0) return;
+    if (historyIndex < 0 || historyIndex >= sys.History.length) return;
+    currentResultIndex.value = historyIndex;
+    selectedHistoryIndex.value = historyIndex;
   }
 
   // ═══════════════════════════════════════════════════════════════
@@ -412,12 +430,12 @@ export const useGachaStore = defineStore('gacha', () => {
   return {
     // State
     banners, selectedBannerIndex, isLoaded, loadError,
-    historyRows, currentResultIndex, statusText,
+    historyRows, currentResultIndex, selectedHistoryIndex, statusText,
     // Computed
     selectedBanner, currentSystem, currentBannerKey,
     // Actions
     initialize, selectBanner, pull, resetCurrentBanner,
-    navigatePrev, navigateNext, reloadAllHistory, clearHistory,
+    navigatePrev, navigateNext, navigateTo, reloadAllHistory, clearHistory,
     addCustomBanner, removeCustomBanner,
   };
 });
