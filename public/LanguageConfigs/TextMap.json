@@ -1276,6 +1276,34 @@
       "en": "Maximum {0} custom pools reached. Delete an existing pool to create a new one.",
       "zh": "已达到 {0} 个自定义卡池上限。请删除现有卡池后再创建新的。"
     },
+    "ui.custom.load": {
+      "en": "📂 Load Pools",
+      "zh": "📂 加载卡池"
+    },
+    "ui.custom.load_error": {
+      "en": "Failed to load pools: {0}",
+      "zh": "加载卡池失败：{0}"
+    },
+    "ui.custom.load_success": {
+      "en": "Successfully loaded {0} custom pool(s).",
+      "zh": "已成功加载 {0} 个自定义卡池。"
+    },
+    "ui.custom.load_truncated": {
+      "en": "Maximum of {0} pools reached. {1} pool(s) were skipped.",
+      "zh": "已达到 {0} 个卡池上限，跳过了 {1} 个卡池。"
+    },
+    "ui.custom.no_pools_to_save": {
+      "en": "No custom pools to save.",
+      "zh": "没有可保存的自定义卡池。"
+    },
+    "ui.custom.save": {
+      "en": "💾 Save Pools",
+      "zh": "💾 保存卡池"
+    },
+    "ui.custom.save_success": {
+      "en": "Custom pools saved to file.",
+      "zh": "自定义卡池已保存到文件。"
+    },
     "dialog.delete_custom_pool.title": {
       "en": "Delete Custom Pool",
       "zh": "删除自定义卡池"
@@ -1287,6 +1315,18 @@
     "dialog.delete_custom_pool.confirm": {
       "en": "Delete",
       "zh": "删除"
+    },
+    "dialog.import_custom_pools.title": {
+      "en": "Import Custom Pools",
+      "zh": "导入自定义卡池"
+    },
+    "dialog.import_custom_pools.message": {
+      "en": "This will replace all your current custom pools with {0} pool(s) from the file. Continue?",
+      "zh": "这将用文件中的 {0} 个卡池替换当前所有自定义卡池。是否继续？"
+    },
+    "dialog.import_custom_pools.confirm": {
+      "en": "Import",
+      "zh": "导入"
     },
     "ui.status.custom_created": {
       "en": "Custom pool \"{0}\" created.",
