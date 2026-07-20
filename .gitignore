@@ -28,9 +28,5 @@ npm-debug.log*
 
 # AI assistant / prompt files
 .claude/
-CLAUDE.md
-DEVELOPMENT_DOCUMENT.md
-CustomPoolDesign.md
-CustomPoolRefactor.md
-HistoryListSelection-dev.md
-HistoryListSelection.md
+*.md
+!README.md

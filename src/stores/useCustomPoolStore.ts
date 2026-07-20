@@ -2,45 +2,11 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import type { CustomPoolConfigDto } from '@/types';
 
-const STORAGE_KEY = 'hsr-gacha-simulator:custom-pools';
-
 /** Maximum number of custom pools a user can create. */
 const MAX_CUSTOM_POOLS = 10;
 
 export const useCustomPoolStore = defineStore('customPool', () => {
   const pools = ref<CustomPoolConfigDto[]>([]);
-  const loaded = ref(false);
-
-  /** Load from localStorage. Call once on app init. */
-  function loadFromStorage(): void {
-    if (loaded.value) return;
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed)) {
-          // Enforce the limit on load (defensive)
-          pools.value = parsed.slice(0, MAX_CUSTOM_POOLS);
-          if (parsed.length > MAX_CUSTOM_POOLS) {
-            saveToStorage(); // trim persisted data
-          }
-        }
-      }
-    } catch (err) {
-      console.warn('[CustomPoolStore] Failed to load from localStorage:', err);
-      pools.value = [];
-    }
-    loaded.value = true;
-  }
-
-  /** Persist current state to localStorage. */
-  function saveToStorage(): void {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(pools.value));
-    } catch (err) {
-      console.error('[CustomPoolStore] Failed to save to localStorage:', err);
-    }
-  }
 
   /**
    * Add a new custom pool.
@@ -51,7 +17,6 @@ export const useCustomPoolStore = defineStore('customPool', () => {
       throw new Error(`Cannot create more than ${MAX_CUSTOM_POOLS} custom pools.`);
     }
     pools.value.push(config);
-    saveToStorage();
     return config;
   }
 
@@ -60,7 +25,6 @@ export const useCustomPoolStore = defineStore('customPool', () => {
     const idx = pools.value.findIndex(p => p.id === id);
     if (idx === -1) return false;
     pools.value.splice(idx, 1);
-    saveToStorage();
     return true;
   }
 
@@ -79,12 +43,117 @@ export const useCustomPoolStore = defineStore('customPool', () => {
   /** The maximum allowed custom pools. */
   const maxPools = MAX_CUSTOM_POOLS;
 
+  /**
+   * Serialize pools to JSON and trigger a browser file download.
+   * Returns false if there are no pools to save.
+   */
+  function exportToFile(): boolean {
+    if (pools.value.length === 0) return false;
+
+    const json = JSON.stringify(pools.value, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const now = new Date();
+    const dateStr = now.getFullYear() + '-'
+      + String(now.getMonth() + 1).padStart(2, '0') + '-'
+      + String(now.getDate()).padStart(2, '0');
+    const filename = `hsr-custom-pools-${dateStr}.json`;
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    return true;
+  }
+
+  /**
+   * Parse and validate a File object containing custom pool JSON.
+   * Returns the parsed and validated pools array.
+   * Throws with a user-readable message on failure.
+   */
+  function validateImportFile(file: File): Promise<CustomPoolConfigDto[]> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const text = reader.result as string;
+          let parsed: unknown;
+          try {
+            parsed = JSON.parse(text);
+          } catch {
+            reject(new Error('Invalid JSON file.'));
+            return;
+          }
+
+          if (!Array.isArray(parsed)) {
+            reject(new Error('File does not contain an array of pools.'));
+            return;
+          }
+
+          const valid: CustomPoolConfigDto[] = [];
+          for (const item of parsed) {
+            if (
+              typeof item === 'object' && item !== null &&
+              typeof (item as CustomPoolConfigDto).id === 'string' &&
+              ((item as CustomPoolConfigDto).poolType === 'Avatar' ||
+               (item as CustomPoolConfigDto).poolType === 'LightCone') &&
+              typeof (item as CustomPoolConfigDto).goldItem === 'object' &&
+              (item as CustomPoolConfigDto).goldItem !== null &&
+              Array.isArray((item as CustomPoolConfigDto).purpleItems) &&
+              (item as CustomPoolConfigDto).purpleItems.length === 3
+            ) {
+              valid.push(item as CustomPoolConfigDto);
+            } else {
+              console.warn('[CustomPoolStore] Skipping invalid pool entry:', item);
+            }
+          }
+
+          if (valid.length === 0) {
+            reject(new Error('No valid custom pools found in file.'));
+            return;
+          }
+
+          resolve(valid);
+        } catch (err) {
+          // Re-throw if it's already a user-facing error
+          if (err instanceof Error) {
+            reject(err);
+          } else {
+            reject(new Error('Failed to read file.'));
+          }
+        }
+      };
+      reader.onerror = () => {
+        reject(new Error('Failed to read file.'));
+      };
+      reader.readAsText(file);
+    });
+  }
+
+  /**
+   * Replace all current pools with the given array.
+   * Enforces the 10-pool limit defensively.
+   * Returns the number of pools truncated (0 if none).
+   */
+  function replaceAll(newPools: CustomPoolConfigDto[]): number {
+    const originalLength = newPools.length;
+    const truncated = newPools.slice(0, MAX_CUSTOM_POOLS);
+    pools.value = truncated;
+    return Math.max(0, originalLength - MAX_CUSTOM_POOLS);
+  }
+
   return {
     pools,
-    loaded,
-    loadFromStorage,
     createPool,
     deletePool,
+    exportToFile,
+    validateImportFile,
+    replaceAll,
     isEmpty,
     count,
     isAtLimit,

@@ -4,7 +4,6 @@ import { GachaSystem } from '@/engine/GachaSystem';
 import { GachaType, ItemType, ItemRarity, PathType, ElementType, type ItemData, type EventPoolConfigEntry, type CustomPoolConfigDto } from '@/types';
 import { loadFromFile, buildMasterLookup, loadEventPoolConfigs, toItemData } from '@/services/usePoolDataService';
 import { useLocalizationService } from '@/services/useLocalizationService';
-import { useCustomPoolStore } from '@/stores/useCustomPoolStore';
 import { rarityToStars as rarityToStarsFn, getRarityForegroundColor, getElementColor } from '@/composables/useRarityColors';
 import { formatPath as formatPathFn, formatElement as formatElementFn } from '@/utils/formatters';
 
@@ -174,13 +173,6 @@ export const useGachaStore = defineStore('gacha', () => {
           gachaType,
           displayName: l10n.get(`ui.banner.${config.BannerKey}`),
         });
-      }
-
-      // Load custom pools from localStorage
-      const customStore = useCustomPoolStore();
-      customStore.loadFromStorage();
-      for (const config of customStore.pools) {
-        addCustomBanner(config);
       }
 
       banners.value = result;
