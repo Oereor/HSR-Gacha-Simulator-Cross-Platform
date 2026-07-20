@@ -75,7 +75,7 @@ npm run build
 ## Features
 
 - **Data-driven banner system** — built-in event banners defined in `EventPoolConfigs.json`; enable/disable via `enabled` flag
-- **Custom event pools** — create your own banners via the GUI at `/custom`: pick pool type, rate-up gold item, 3 rate-up purple items, optional custom title. Persisted to localStorage (max 10)
+- **Custom event pools** — create your own banners via the GUI at `/custom`: pick pool type, rate-up gold item, 3 rate-up purple items, optional custom title. Session-only (max 10); save/load pools via JSON file export and import
 - **10+ built-in banners** covering Ordinary, All Gold (Expanded Pool), Event Avatar, and Event Light Cone warps
 - **Accurate HSR probability model** — 0.6% base 5★ rate, soft pity (ramps after pull 73 for avatars / 65 for LCs), hard pity, 50/50 (avatar) / 75/25 (light cone)
 - **10-pull enforcement** — at least one 4★+ guaranteed per 10-pull
