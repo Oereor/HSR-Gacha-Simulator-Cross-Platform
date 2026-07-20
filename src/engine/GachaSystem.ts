@@ -45,8 +45,10 @@ export class GachaSystem {
   /** Pull number after which purple soft-pity ramp begins. */
   private readonly PurpleItemRateUpThreshold = 8;
 
-  /** Base probability for gold items (in 1/1000 units: 6 = 0.6%). */
-  private readonly GoldItemBaseProbability = 6;
+  /** Base probability for gold avatar (in 1/1000 units: 6 = 0.6%). */
+  private readonly GoldAvatarBaseProbability = 6;
+  /** Base probability for gold light cone (in 1/1000 units: 8 = 0.8%). */
+  private readonly GoldLightConeBaseProbability = 8;
   /** Per-pull probability step for gold avatars after threshold (6.0% each). */
   private readonly GoldAvatarRateUpStep = 60;
   /** Per-pull probability step for gold light cones after threshold (7.0% each). */
@@ -436,24 +438,24 @@ export class GachaSystem {
    */
   private getGoldAvatarProbability(failureCount: number): number {
     if (failureCount > this.GoldAvatarRateUpThreshold) {
-      return this.GoldItemBaseProbability +
+      return this.GoldAvatarBaseProbability +
         (failureCount + 1 - this.GoldAvatarRateUpThreshold) * this.GoldAvatarRateUpStep;
     }
-    return this.GoldItemBaseProbability;
+    return this.GoldAvatarBaseProbability;
   }
 
   /**
-   * Gold light cone probability: base 6/1000 (0.6%).
+   * Gold light cone probability: base 8/1000 (0.8%).
    * After GoldLightConeRateUpThreshold (65) consecutive non-gold pulls,
    * adds GoldLightConeRateUpStep (70) per additional pull.
-   * Reaches ~100% at pull 80.  (6 + (80-65)*70 = 6 + 1050 = 1056 > 1000)
+   * Reaches ~100% at pull 80.  (8 + (80-65)*70 = 8 + 1050 = 1058 > 1000)
    */
   private getGoldLightConeProbability(failureCount: number): number {
     if (failureCount > this.GoldLightConeRateUpThreshold) {
-      return this.GoldItemBaseProbability +
+      return this.GoldLightConeBaseProbability +
         (failureCount + 1 - this.GoldLightConeRateUpThreshold) * this.GoldLightConeRateUpStep;
     }
-    return this.GoldItemBaseProbability;
+    return this.GoldLightConeBaseProbability;
   }
 
   /**
