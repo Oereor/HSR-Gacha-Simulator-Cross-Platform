@@ -909,6 +909,26 @@
       "en": "Statistics",
       "zh": "统计数据"
     },
+    "ui.group.gold_stats": {
+      "en": "Visual Statistics",
+      "zh": "可视化出金统计"
+    },
+    "ui.gold_stats.current_pity": {
+      "en": "Current pity",
+      "zh": "当前计数"
+    },
+    "ui.gold_stats.missed": {
+      "en": "Missed!",
+      "zh": "歪了！"
+    },
+    "ui.gold_stats.pull_count": {
+      "en": "{0} pulls",
+      "zh": "{0} 抽"
+    },
+    "ui.gold_stats.empty": {
+      "en": "Pull a 5★ item to see stats.",
+      "zh": "获得五星物品后将显示统计。"
+    },
     "ui.group.latest_result": {
       "en": "Latest Pull Result",
       "zh": "最新跃迁结果"
