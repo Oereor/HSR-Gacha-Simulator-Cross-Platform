@@ -30,12 +30,10 @@ function getBarWidthPercent(count: number): string {
   return `${Math.round(pct)}%`;
 }
 
-/** Gold records sorted descending by pull count (longest pities at top). */
-const sortedRecords = computed<GoldItemRecord[]>(() => {
-  const records = [...pityStats.goldItemRecords];
-  records.sort((a, b) => b.pullsSinceLastGold - a.pullsSinceLastGold);
-  return records;
-});
+/** Gold records in chronological order, latest first (matching history list). */
+const latestRecords = computed<GoldItemRecord[]>(() =>
+  [...pityStats.goldItemRecords].reverse()
+);
 
 /** Current pity count (pulls since last gold) as a number, for the dynamic bar. */
 const currentPity = computed(() => Number(pityStats.goldPity));
@@ -74,17 +72,17 @@ const currentPity = computed(() => Number(pityStats.goldPity));
         </div>
 
         <!-- Pull count -->
-        <span class="text-text-primary w-6 text-right font-mono shrink-0">
+        <span class="text-text-primary w-16 text-left font-mono shrink-0">
           {{ pityStats.goldPity }}
         </span>
 
-        <!-- Spacer: matches missed-label column width (w-14) + count diff (w-16 vs w-6 = w-10) = w-24 -->
-        <span class="w-24 shrink-0" />
+        <!-- Spacer: matches missed-label column width -->
+        <span class="w-14 shrink-0" />
       </div>
 
       <!-- Gold item records -->
       <div
-        v-for="record in sortedRecords"
+        v-for="record in latestRecords"
         :key="record.item.Name + '|' + record.pullsSinceLastGold"
         class="flex items-center gap-2 text-sm"
       >
@@ -108,7 +106,7 @@ const currentPity = computed(() => Number(pityStats.goldPity));
         </div>
 
         <!-- Pull count with "pulls" suffix -->
-        <span class="text-text-primary w-16 text-right font-mono font-semibold text-xs shrink-0">
+        <span class="text-text-primary w-16 text-left font-mono font-semibold text-xs shrink-0">
           {{ l10n.get('ui.gold_stats.pull_count', record.pullsSinceLastGold) }}
         </span>
 
