@@ -1,4 +1,4 @@
-import { type ItemData, ItemType, ItemRarity, ElementType, PathType, GachaType } from '@/types';
+import { type ItemData, type GoldItemRecord, ItemType, ItemRarity, ElementType, PathType, GachaType } from '@/types';
 
 /**
  * Core gacha engine. Pure logic — no DOM, no framework dependency.
@@ -11,6 +11,14 @@ export class GachaSystem {
   // ── Public readonly state ──────────────────────────────────────
   readonly History: ItemData[] = [];
   readonly Type: GachaType;
+
+  /** Per-gold-item records: one entry per gold pull, in chronological order. */
+  private goldItemRecords: GoldItemRecord[] = [];
+
+  /** Read-only view of all gold pull records. */
+  get goldItemRecordList(): readonly GoldItemRecord[] {
+    return this.goldItemRecords;
+  }
 
   /** Callback invoked after every History mutation (pull, 10-pull, reset). */
   onHistoryChanged: (() => void) | null = null;
@@ -189,6 +197,7 @@ export class GachaSystem {
    */
   reset(): void {
     this.History.length = 0; // clear in-place
+    this.goldItemRecords.length = 0;
     this.missedGoldEventItem = false;
     this.missedPurpleEventItem = false;
     this.eventNonGoldGachaAvatarCount = 0;
@@ -318,9 +327,12 @@ export class GachaSystem {
   private doGacha(type: GachaType): ItemData {
     if (type === GachaType.Ordinary) {
       if (this.isGoldAvatar(this.ordinaryNonGoldGachaCount)) {
+        const pullsSinceLast = this.ordinaryNonGoldGachaCount + 1;
         this.ordinaryNonGoldGachaCount = 0;
         this.ordinaryNonPurpleGachaCount = 0;
-        return this.getGoldItem(type, false);
+        const item = this.getGoldItem(type, false);
+        this.goldItemRecords.push({ item, pullsSinceLastGold: pullsSinceLast, isMissed: false });
+        return item;
       }
       if (this.isPurpleItem(this.ordinaryNonPurpleGachaCount)) {
         this.ordinaryNonPurpleGachaCount = 0;
@@ -334,10 +346,13 @@ export class GachaSystem {
 
     if (type === GachaType.EventAvatar) {
       if (this.isGoldAvatar(this.eventNonGoldGachaAvatarCount)) {
+        const pullsSinceLast = this.eventNonGoldGachaAvatarCount + 1;
         this.eventNonGoldGachaAvatarCount = 0;
         this.eventNonPurpleGachaCount = 0;
         const item = this.getGoldItem(type, this.missedGoldEventItem);
-        this.missedGoldEventItem = !this.eventGoldItemPool.includes(item);
+        const isMissed = !this.eventGoldItemPool.includes(item);
+        this.missedGoldEventItem = isMissed;
+        this.goldItemRecords.push({ item, pullsSinceLastGold: pullsSinceLast, isMissed });
         return item;
       }
       if (this.isPurpleItem(this.eventNonPurpleGachaCount)) {
@@ -356,10 +371,13 @@ export class GachaSystem {
 
     if (type === GachaType.EventLightCone) {
       if (this.isGoldLightCone(this.eventNonGoldGachaLightConeCount)) {
+        const pullsSinceLast = this.eventNonGoldGachaLightConeCount + 1;
         this.eventNonGoldGachaLightConeCount = 0;
         this.eventNonPurpleGachaCount = 0;
         const item = this.getGoldItem(type, this.missedGoldEventItem);
-        this.missedGoldEventItem = !this.eventGoldItemPool.includes(item);
+        const isMissed = !this.eventGoldItemPool.includes(item);
+        this.missedGoldEventItem = isMissed;
+        this.goldItemRecords.push({ item, pullsSinceLastGold: pullsSinceLast, isMissed });
         return item;
       }
       if (this.isPurpleItem(this.eventNonPurpleGachaCount)) {

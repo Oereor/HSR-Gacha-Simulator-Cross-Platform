@@ -81,6 +81,9 @@ export const useGachaStore = defineStore('gacha', () => {
   // ── Status ─────────────────────────────────────────────────────
   const statusText = ref('');
 
+  /** Monotonically incrementing counter that bumps after every pull/reset, forcing reactive recomputation. */
+  const statsTick = ref(0);
+
   // ═══════════════════════════════════════════════════════════════
   //  Initialization (replaces MainViewModel.InitializeSystems)
   // ═══════════════════════════════════════════════════════════════
@@ -229,6 +232,7 @@ export const useGachaStore = defineStore('gacha', () => {
     }
 
     statusText.value = l10n.get('ui.status.ready');
+    statsTick.value++;
   }
 
   // ═══════════════════════════════════════════════════════════════
@@ -244,6 +248,7 @@ export const useGachaStore = defineStore('gacha', () => {
     selectedHistoryIndex.value = -1;
     historyRows.value = [];
     statusText.value = l10n.get('ui.status.banner_reset', bannerName);
+    statsTick.value++;
   }
 
   // ═══════════════════════════════════════════════════════════════
@@ -422,7 +427,7 @@ export const useGachaStore = defineStore('gacha', () => {
   return {
     // State
     banners, selectedBannerIndex, isLoaded, loadError,
-    historyRows, currentResultIndex, selectedHistoryIndex, statusText,
+    historyRows, currentResultIndex, selectedHistoryIndex, statusText, statsTick,
     // Computed
     selectedBanner, currentSystem, currentBannerKey,
     // Actions
