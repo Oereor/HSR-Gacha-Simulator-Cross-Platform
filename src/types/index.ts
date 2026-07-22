@@ -66,6 +66,19 @@ export interface ItemData {
 }
 
 /**
+ * Recorded statistic for a single gold (5-star) pull result.
+ * Tracks how many pulls it took since the previous gold item.
+ */
+export interface GoldItemRecord {
+  /** The gold item that was pulled. Reference-equal to an entry in the item pools. */
+  item: ItemData;
+  /** Pulls since previous gold, inclusive of this one (1-based). */
+  pullsSinceLastGold: number;
+  /** True when off-rate (not in eventGoldItemPool). Always false for ordinary banners. */
+  isMissed: boolean;
+}
+
+/**
  * Parsed representation of one enabled event banner from EventPoolConfigs.json.
  * Mirrors HSR_Gacha_Simulator.Models.EventPoolConfigEntry exactly.
  */

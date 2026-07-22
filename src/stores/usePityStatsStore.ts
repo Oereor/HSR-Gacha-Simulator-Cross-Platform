@@ -7,7 +7,10 @@ export const usePityStatsStore = defineStore('pityStats', () => {
   const gacha = useGachaStore();
   const l10n = useLocalizationService();
 
-  const sys = computed(() => gacha.currentSystem);
+  const sys = computed(() => {
+    void gacha.statsTick; // establish reactive dependency on every pull/reset
+    return gacha.currentSystem;
+  });
 
   // ── Pity: Gold ─────────────────────────────────────────────────
   const goldPity = computed(() => String(sys.value?.nonGoldGachaCount ?? 0));
@@ -120,6 +123,15 @@ export const usePityStatsStore = defineStore('pityStats', () => {
     },
   );
 
+  // ── Gold item per-pull statistics ─────────────────────────────
+  const goldItemRecords = computed(() =>
+    sys.value?.goldItemRecordList ?? []
+  );
+
+  const hasGoldItemRecords = computed(() =>
+    goldItemRecords.value.length > 0
+  );
+
   return {
     goldPity, goldGuarantee, goldGuaranteeColor,
     purplePity, purpleGuarantee, purpleGuaranteeColor,
@@ -129,5 +141,6 @@ export const usePityStatsStore = defineStore('pityStats', () => {
     total,
     showAvgGold, avgGoldPullText,
     showAvgRateUp, avgRateUpPullText,
+    goldItemRecords, hasGoldItemRecords,
   };
 });

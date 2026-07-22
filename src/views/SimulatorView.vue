@@ -5,6 +5,7 @@ import { useLocalizationService } from '@/services/useLocalizationService';
 import { useAppInit } from '@/composables/useAppInit';
 import BannerStrip from '@/components/BannerStrip.vue';
 import PullControls from '@/components/PullControls.vue';
+import GoldItemStats from '@/components/GoldItemStats.vue';
 import StatisticsPanel from '@/components/StatisticsPanel.vue';
 import ResultCard from '@/components/ResultCard.vue';
 import ResultNavigator from '@/components/ResultNavigator.vue';
@@ -46,8 +47,9 @@ watchEffect(() => {
     <template v-else>
       <div class="flex-1 overflow-y-auto p-4 space-y-4">
         <BannerStrip />
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <PullControls />
+          <GoldItemStats />
           <StatisticsPanel />
         </div>
         <div>
