@@ -23,7 +23,7 @@ function getPullColor(count: number): string {
  * 1 pull → 15%, 90 pulls → 100%.
  */
 function getBarWidthPercent(count: number): string {
-  const minW = 15;
+  const minW = 0;
   const maxW = 100;
   const clamped = Math.max(1, Math.min(90, count));
   const pct = minW + ((clamped - 1) / 89) * (maxW - minW);
