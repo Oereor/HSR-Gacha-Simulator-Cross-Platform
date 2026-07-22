@@ -914,12 +914,12 @@
       "zh": "可视化出金统计"
     },
     "ui.gold_stats.current_pity": {
-      "en": "Current pity",
-      "zh": "当前计数"
+      "en": "Pulls invested",
+      "zh": "已垫抽数"
     },
     "ui.gold_stats.missed": {
-      "en": "Missed!",
-      "zh": "歪了！"
+      "en": "Missed",
+      "zh": "歪"
     },
     "ui.gold_stats.pull_count": {
       "en": "{0} pulls",
