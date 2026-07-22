@@ -18,6 +18,18 @@ function getPullColor(count: number): string {
   return `hsl(${Math.round(hue)}, 75%, 45%)`;
 }
 
+/**
+ * Scale the bar width linearly.
+ * 1 pull → 15%, 90 pulls → 100%.
+ */
+function getBarWidthPercent(count: number): string {
+  const minW = 15;
+  const maxW = 100;
+  const clamped = Math.max(1, Math.min(90, count));
+  const pct = minW + ((clamped - 1) / 89) * (maxW - minW);
+  return `${Math.round(pct)}%`;
+}
+
 /** Gold records sorted descending by pull count (longest pities at top). */
 const sortedRecords = computed<GoldItemRecord[]>(() => {
   const records = [...pityStats.goldItemRecords];
@@ -50,11 +62,14 @@ const currentPity = computed(() => Number(pityStats.goldPity));
           {{ l10n.get('ui.gold_stats.current_pity') }}
         </span>
 
-        <!-- Colored bar (always full width) -->
+        <!-- Colored bar -->
         <div class="flex-1 h-5 rounded-sm overflow-hidden bg-[#2a2a4e]">
           <div
             class="h-full rounded-sm transition-all duration-200"
-            :style="{ backgroundColor: getPullColor(currentPity) }"
+            :style="{
+              width: getBarWidthPercent(currentPity),
+              backgroundColor: getPullColor(currentPity),
+            }"
           />
         </div>
 
@@ -62,6 +77,9 @@ const currentPity = computed(() => Number(pityStats.goldPity));
         <span class="text-text-primary w-6 text-right font-mono shrink-0">
           {{ pityStats.goldPity }}
         </span>
+
+        <!-- Spacer: matches missed-label column width (w-14) + count diff (w-16 vs w-6 = w-10) = w-24 -->
+        <span class="w-24 shrink-0" />
       </div>
 
       <!-- Gold item records -->
@@ -78,11 +96,14 @@ const currentPity = computed(() => Number(pityStats.goldPity));
           {{ l10n.getItemName(record.item.Name) }}
         </span>
 
-        <!-- Colored bar (always full width, color encodes pity distance) -->
+        <!-- Colored bar -->
         <div class="flex-1 h-5 rounded-sm overflow-hidden bg-[#2a2a4e]">
           <div
             class="h-full rounded-sm"
-            :style="{ backgroundColor: getPullColor(record.pullsSinceLastGold) }"
+            :style="{
+              width: getBarWidthPercent(record.pullsSinceLastGold),
+              backgroundColor: getPullColor(record.pullsSinceLastGold),
+            }"
           />
         </div>
 
