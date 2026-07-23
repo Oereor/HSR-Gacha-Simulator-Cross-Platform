@@ -52,7 +52,7 @@ const currentPity = computed(() => Number(pityStats.goldPity));
     </div>
 
     <!-- Records list -->
-    <div v-else class="space-y-2 max-h-60 overflow-y-auto">
+    <div v-else class="space-y-2 max-h-60 overflow-y-auto px-2">
       <!-- Current pity row (dynamic, updates each pull) -->
       <div class="flex items-center gap-2 text-sm">
         <!-- "Current pity" label (right-aligned, fixed width) -->
