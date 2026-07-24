@@ -20,7 +20,7 @@ function getPullColor(count: number): string {
 
 /**
  * Scale the bar width linearly.
- * 1 pull → 15%, 90 pulls → 100%.
+ * 1 pull → 0%, 90 pulls → 100%.
  */
 function getBarWidthPercent(count: number): string {
   const minW = 0;
