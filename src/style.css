@@ -17,13 +17,13 @@
   --color-btn-reset: #6e3a3a;
   --color-btn-reset-hover: #8e4a4a;
   --color-btn-reset-active: #4e2a2a;
-  --color-elem-physical: #c0c0c0;
-  --color-elem-fire: #ff4444;
-  --color-elem-ice: #4499ff;
-  --color-elem-lightning: #dd77dd;
-  --color-elem-wind: #44cc44;
-  --color-elem-quantum: #6666cc;
-  --color-elem-imaginary: #dddd44;
+  --color-elem-physical: #b6b6b6;
+  --color-elem-fire: #f25740;
+  --color-elem-ice: #6dc4ea;
+  --color-elem-lightning: #d46aeb;
+  --color-elem-wind: #7ad8a5;
+  --color-elem-quantum: #8a86de;
+  --color-elem-imaginary: #fee554;
 }
 
 body {

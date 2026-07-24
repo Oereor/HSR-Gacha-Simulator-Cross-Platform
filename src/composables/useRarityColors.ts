@@ -23,13 +23,13 @@ export function getRarityBorderColor(rarity: ItemRarity): string {
 /** Maps ElementType to display color. Mirrors ElementTypeToBrushConverter.GetBrush. */
 export function getElementColor(element: ElementType): string {
   switch (element) {
-    case ElementType.Physical:  return '#c0c0c0';
-    case ElementType.Fire:      return '#ff4444';
-    case ElementType.Ice:       return '#4499ff';
-    case ElementType.Lightning: return '#dd77dd';
-    case ElementType.Wind:      return '#44cc44';
-    case ElementType.Quantum:   return '#6666cc';
-    case ElementType.Imaginary: return '#dddd44';
+    case ElementType.Physical:  return '#b6b6b6';
+    case ElementType.Fire:      return '#f25740';
+    case ElementType.Ice:       return '#6dc4ea';
+    case ElementType.Lightning: return '#d46aeb';
+    case ElementType.Wind:      return '#7ad8a5';
+    case ElementType.Quantum:   return '#8a86de';
+    case ElementType.Imaginary: return '#fee554';
     default:                    return 'transparent';
   }
 }
